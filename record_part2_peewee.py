@@ -4,7 +4,7 @@ from peewee import *
 db = SqliteDatabase('records.sqlite')
 
 
-# storing
+# storing model in db
 class recordman(Model):
     name = CharField()
     country = CharField()
@@ -23,7 +23,7 @@ db.connect()
 db.create_tables([recordman])
 
 
-# prints full record_holder table in descending order by total_catches
+# prints  record holder  by catches
 def print_table():
     recordHolder = (recordman.select()).order_by(recordman.catches.desc())
     print()
@@ -34,14 +34,14 @@ def print_table():
     print()
 
 
-# adds new Record_Holder object to record_holder table
+# adds another record holder
 def add_new_record(name, country, catches):
     new_record = recordman(name=name, country=country, catches=catches)
     new_record.save()
     print_table()
 
 
-# displays one Record_Holder object by name from record_holders table
+# Displays record holder by name
 def search_holder(name):
     recordHolder = recordman.get_or_none(recordman.name == name)
     print()
@@ -49,13 +49,13 @@ def search_holder(name):
     print()
 
 
-# deletes Record_Holder object by name from record_holder table
+# delete record holder by name
 def delete_holder(name):
     recordman.delete().where(recordman.name == name).execute()
     print_table()
 
 
-# updates total_catches for Record_Holder object by name in record_holder table
+# updates catches by name
 def update_catches(name, catches):
     recordman.update(catches=catches).where(recordman.name == name).execute()
     print_table()
@@ -76,14 +76,14 @@ def main():
         if choice == "1":
             name = str(input("Enter record holder's name: "))
             country = str(input(f"Enter the country {name} is from: "))
-            catches = int(input(f"Enter the number of catches {name} has: "))
+            catches = int(input(f"Enter the number of catches {name} got: "))
             add_new_record(name, country, catches)
         # Search for record holder by name
         elif choice == "2":
             name = str(input("Enter record holder's name: "))
             search_holder(name)
 
-        # Update catches for record holder by name
+        # Update catches  by name
         elif choice == "3":
             name = str(input("Enter record holder's name: "))
             new_catches = int(input("Enter new total number of catches: "))
